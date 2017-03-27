@@ -1,0 +1,16 @@
+<seelog>
+    <outputs formatid="main">
+        <filter levels="info,debug,critical,error">
+            <console />
+        </filter>
+        <filter levels="debug">
+            <rollingfile type="date" filename="./log/debug/debug.log" namemode="prefix" datepattern="2006.01.02"/>
+        </filter>
+        <filter levels="error">
+            <rollingfile type="date" filename="./log/error/err.log" namemode="prefix" datepattern="2006.01.02" />
+        </filter>
+    </outputs>
+    <formats>
+        <format id="main" format="%Date/%Time [%LEVEL] %RelFile %Line %Msg%n"/>
+    </formats>
+</seelog>

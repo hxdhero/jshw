@@ -1,0 +1,4 @@
+2017-03-26/23:51:46 [ERROR] logic/orderLogic.go 83 保存ordergoods失败,orderID:6694  lineTitle: 手机版测试线路，勿购买
+2017-03-26/23:51:46 [ERROR] controller/orderController.go 165 内部错误
+2017-03-26/23:53:30 [ERROR] logic/orderLogic.go 83 保存ordergoods失败,orderID:6695  lineTitle: 手机版测试线路，勿购买error: mssql: 列名 'quantitiy' 无效。
+2017-03-26/23:53:30 [ERROR] controller/orderController.go 165 内部错误

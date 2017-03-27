@@ -1,0 +1,55 @@
+hash: 059b03ccf6f798f9540d5e6d979901264ae1f07a56e335cf99bf0a1f51e9891f
+updated: 2017-03-12T15:27:17.030748327+08:00
+imports:
+- name: github.com/astaxie/beego
+  version: 90999717dda6193c6f970eec52e289b0a9e74998
+  subpackages:
+  - config
+- name: github.com/cihub/seelog
+  version: d2c6e5aa9fbfdd1c624e140287063c7730654115
+- name: github.com/denisenkom/go-mssqldb
+  version: efb3002072bc69d12d92dfc70290ccfdaa5403cf
+- name: github.com/gin-gonic/gin
+  version: e2212d40c62a98b388a5eb48ecbdcf88534688ba
+  subpackages:
+  - binding
+  - render
+- name: github.com/go-xorm/builder
+  version: c6e604e9c7b7461715091e14ad0c242ec44c26e4
+- name: github.com/go-xorm/core
+  version: 5bf745d7d163f4380e6c2bba8c4afa60534dd087
+- name: github.com/go-xorm/xorm
+  version: d75356fc733fce7683c6d961fc2aeb16ededc8ef
+- name: github.com/golang/protobuf
+  version: 2402d76f3d41f928c7902a765dfc872356dd3aad
+  subpackages:
+  - proto
+- name: github.com/gorilla/context
+  version: 08b5f424b9271eedf6f9f0ce86cb9396ed337a42
+- name: github.com/gorilla/securecookie
+  version: e59506cc896acb7f7bf732d4fdf5e25f7ccd8983
+- name: github.com/gorilla/sessions
+  version: ba78acc856fe7c79891d516131b3d903cc8d9367
+- name: github.com/manucorporat/sse
+  version: ee05b128a739a0fb76c7ebd3ae4810c1de808d6d
+- name: github.com/mattn/go-isatty
+  version: 3a115632dcd687f9c8cd01679c83a06a0e21c1f3
+- name: github.com/tommy351/gin-sessions
+  version: 353060947eb6549deb9e15229c73ed37931acf5f
+- name: golang.org/x/crypto
+  version: 728b753d0135da6801d45a38e6f43ff55779c5c2
+  subpackages:
+  - md4
+- name: golang.org/x/net
+  version: f315505cf3349909cdf013ea56690da34e96a451
+  subpackages:
+  - context
+- name: golang.org/x/sys
+  version: 99f16d856c9836c42d24e7ab64ea72916925fa97
+  subpackages:
+  - unix
+- name: gopkg.in/go-playground/validator.v8
+  version: c193cecd124b5cc722d7ee5538e945bdb3348435
+- name: gopkg.in/yaml.v2
+  version: a3f3340b5840cee44f372bddb5880fcbc419b46a
+testImports: []

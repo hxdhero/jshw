@@ -1,0 +1,15 @@
+2017-03-19/15:40:12 [DEBUG] controller/controller.go 48 mobile: 13761764141
+2017-03-19/15:40:12 [DEBUG] controller/controller.go 49 smstype: 1
+2017-03-19/15:40:12 [DEBUG] controller/controller.go 80 uc{7368 0  FillOrder 266032 2017-03-18 16:57:34 +0800 CST 2017-03-18 16:37:34 +0800 CST 13761764141}
+2017-03-19/15:40:12 [DEBUG] util/commutil.go 174 http://gw.api.taobao.com/router/rest?app_key=23667852&format=json&method=alibaba.aliqin.fc.sms.num.send&rec_num=13761764141&sign=4A2607BD9811C03F26FF35A3C5184729&sign_method=md5&sms_free_sign_name=%E9%87%91%E5%B1%B1%E6%88%B7%E5%A4%96%E7%BD%91&sms_param=%7B%22code%22%3A%22128354%22%2C%22valid%22%3A%2220%22%7D&sms_template_code=SMS_53735171&sms_type=normal&timestamp=2017-03-19+15%3A40%3A12&v=2.0
+2017-03-19/15:40:18 [DEBUG] controller/controller.go 120 suc: trueresp: {"alibaba_aliqin_fc_sms_num_send_response":{"result":{"err_code":"0","model":"106474956442^1108785283095","success":true},"request_id":"14sqhl8kt3kkb"}}err: <nil>
+2017-03-19/15:40:42 [DEBUG] controller/orderController.go 31 ma: map[orderForm:map[selectContacts:[map[mobile:13761764141 idcard:310228198603200615 id:3256 name:胡晓东]] orderUserForm:map[id:3159 name:胡晓东 mobile:13761764141] lineID:1116 selectPoint:map[Name:金山：九天银河停车场 Orders:99 ID:1] valCode:128354 selectPersons:[]]]
+2017-03-19/15:40:42 [DEBUG] controller/orderController.go 32 13761764141
+2017-03-19/15:40:42 [DEBUG] controller/orderController.go 34 map[orderUserForm:map[id:3159 name:胡晓东 mobile:13761764141] lineID:1116 selectPoint:map[ID:1 Name:金山：九天银河停车场 Orders:99] valCode:128354 selectPersons:[] selectContacts:[map[mobile:13761764141 idcard:310228198603200615 id:3256 name:胡晓东]]]
+2017-03-19/15:42:11 [DEBUG] controller/orderController.go 31 ma: map[orderForm:map[selectPoint:map[ID:1 Name:金山：九天银河停车场 Orders:99] valCode:128354 selectPersons:[] selectContacts:[map[idcard:310228198603200615 id:3256 name:胡晓东 mobile:13761764141]] orderUserForm:map[id:3159 name:胡晓东 mobile:13761764141] lineID:1116]]
+2017-03-19/15:42:11 [DEBUG] controller/orderController.go 32 13761764141
+2017-03-19/15:42:11 [DEBUG] controller/orderController.go 34 map[selectPersons:[] selectContacts:[map[id:3256 name:胡晓东 mobile:13761764141 idcard:310228198603200615]] orderUserForm:map[id:3159 name:胡晓东 mobile:13761764141] lineID:1116 selectPoint:map[ID:1 Name:金山：九天银河停车场 Orders:99] valCode:128354]
+2017-03-19/15:42:13 [DEBUG] controller/orderController.go 108 sino: 00401
+2017-03-19/15:42:13 [DEBUG] controller/orderController.go 110 2017031900401
+2017-03-19/15:42:14 [DEBUG] controller/orderController.go 159 insert val: 1
+2017-03-19/15:42:14 [DEBUG] controller/orderController.go 160 after insert{5690 2017031900401  3159 胡晓东 0 0 1 0001-01-01 00:00:00 +0000 UTC 13761764141  0 1 1 2017-03-19 15:42:13.767619868 +0800 CST 1 0001-01-01 00:00:00 +0000 UTC   2017-03-18 00:00:00 +0800 CST 2017-03-20 23:59:00 +0800 CST 1 金山：九天银河停车场}

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>金山户外网</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
+    <style type="text/css">
+        .fade-enter-active, .fade-leave-active {
+            transition: opacity .5s
+        }
+
+        .fade-enter, .fade-leave-active {
+            opacity: 0
+        }
+    </style>
+
+</head>
+<body>
+
+<!--body start-->
+<div id="app">
+
+    <!--中间内容开始-->
+    <transition name="fade">
+        <router-view></router-view>
+    </transition>
+    <!--中间内容结束-->
+
+</div>
+<!--body end-->
+
+<!--js start-->
+<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+<script type="text/javascript">
+    $.config = {
+        router: false
+    }
+
+</script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+<script type="text/javascript" src="/static/js/vue.js"></script>
+<script type="text/javascript" src="/static/js/vue-router.js"></script>
+<script type="text/javascript">
+    var outdoor = {template: "<div>this is main</div>"}
+    var member = {template: '<div>foo</div>'}
+    var about = {template: '<div>this is b</div>'}
+    var parent = {
+        template: `
+        <div>
+        </transition name="fade">
+        <router-view></router-view>
+        </transition>
+        <nav class="bar bar-tab">
+        <router-link to="/outdoor" class="tab-item external">
+        <span class="icon icon-home"></span>
+        <span class="tab-label">旅游线路</span>
+        </router-link>
+        <router-link to="/member" class="tab-item external">
+        <span class="icon icon-me"></span>
+        <span class="tab-label">会员</span>
+        <!--<span class="badge">2</span>-->
+        </router-link>
+        <router-link to="/about" class="tab-item external">
+        <span class="icon icon-app"></span>
+        <span class="tab-label">关于</span>
+        <!--<span class="badge">2</span>-->
+        </router-link>
+        </nav>
+        </div>
+        `
+    }
+    var headPics = {
+        template: `
+        <div>
+        <div class="card demo-card-header-pic">
+            <div valign="bottom" class="card-header color-white no-border no-padding">
+                <img class='card-cover'
+                     src='http://www.jshwclub.com/upload/201701/12/201701121451215856.jpg'
+                     alt="">
+            </div>
+            <div class="card-content">
+                <div class="card-content-inner">
+                    <p class="color-gray">发表于 2017/01/12</p>
+                    <p>下雪啦下雪啦，《1.15》《1.18》莫干山看雪啦~~~</p>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="link">赞</a>
+                <a href="#" class="link">更多</a>
+            </div>
+        </div>
+        <div class="card demo-card-header-pic">
+            <div valign="bottom" class="card-header color-white no-border no-padding">
+                <img class='card-cover'
+                     src='http://www.jshwclub.com/upload/201701/12/201701121451215856.jpg'
+                     alt="">
+            </div>
+            <div class="card-content">
+                <div class="card-content-inner">
+                    <p class="color-gray">发表于 2017/01/12</p>
+                    <p>《1.14》勇攀丹霞磕山 险探百丈金枪</p>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="link">赞</a>
+                <a href="#" class="link">更多</a>
+            </div>
+        </div>
+        <div class="card demo-card-header-pic">
+            <div valign="bottom" class="card-header color-white no-border no-padding">
+                <img class='card-cover'
+                     src='http://www.jshwclub.com/upload/201701/12/201701121451215856.jpg'
+                     alt="">
+            </div>
+            <div class="card-content">
+                <div class="card-content-inner">
+                    <p class="color-gray">发表于 2017/01/12</p>
+                    <p>《独家亲子豪华线路》日铸岭+房车体验之旅</p>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="link">赞</a>
+                <a href="#" class="link">更多</a>
+            </div>
+        </div>
+    </div>
+        `,
+        beforeRouteEnter(to,from,next){
+            next(vm => {
+                alert("aa");$.refreshScroller()
+            })
+        }
+    }
+    var notFound = {template: '<div>page not found</div>'}
+    var routes = [
+        {
+            path: "/", component: parent,
+            children: [
+                {path: "outdoor", component: headPics},
+                {path: "member", component: member},
+                {path: "about", component: about}
+            ]
+        },
+        {path: "*", component: notFound}
+    ]
+    var router = new VueRouter({
+        mode: "history",
+        routes
+    })
+
+    var app = new Vue({
+        router
+    }).$mount("#app")
+</script>
+<!--js end-->
+</body>
+</html>

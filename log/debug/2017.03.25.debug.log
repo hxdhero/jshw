@@ -1,0 +1,66 @@
+2017-03-25/15:02:04 [DEBUG] controller/controller.go 48 mobile: 13761764141
+2017-03-25/15:02:04 [DEBUG] controller/controller.go 49 smstype: 1
+2017-03-25/15:02:04 [DEBUG] controller/controller.go 80 uc{7379 0  FillOrder 600357 2017-03-19 17:43:18.897 +0800 CST 2017-03-19 17:23:18.897 +0800 CST 13761764141}
+2017-03-25/15:02:04 [DEBUG] util/commutil.go 194 http://gw.api.taobao.com/router/rest?app_key=23667852&format=json&method=alibaba.aliqin.fc.sms.num.send&rec_num=13761764141&sign=0BEFA958C033BB1339A648AF2BCFC406&sign_method=md5&sms_free_sign_name=%E9%87%91%E5%B1%B1%E6%88%B7%E5%A4%96%E7%BD%91&sms_param=%7B%22code%22%3A%22790675%22%2C%22valid%22%3A%2220%22%7D&sms_template_code=SMS_53735171&sms_type=normal&timestamp=2017-03-25+15%3A02%3A04&v=2.0
+2017-03-25/15:02:04 [DEBUG] controller/controller.go 120 suc: trueresp: {"alibaba_aliqin_fc_sms_num_send_response":{"result":{"err_code":"0","model":"106589064267^1108950595248","success":true},"request_id":"2m6n9zg40ec9"}}err: <nil>
+2017-03-25/15:05:46 [DEBUG] controller/orderController.go 32 ma: map[orderForm:map[lineID:1116 selectPoint:map[ID:16 Name:石化：亭卫南路800号 Orders:1] valCode:790675 selectPersons:[] selectContacts:[map[id:3256 name:胡晓东 mobile:13761764141 idcard:310228198603200615]] orderUserForm:map[id:3159 name:胡晓东 mobile:13761764141]]]
+2017-03-25/15:05:46 [DEBUG] controller/orderController.go 33 13761764141
+2017-03-25/15:05:46 [DEBUG] controller/orderController.go 35 map[lineID:1116 selectPoint:map[ID:16 Name:石化：亭卫南路800号 Orders:1] valCode:790675 selectPersons:[] selectContacts:[map[id:3256 name:胡晓东 mobile:13761764141 idcard:310228198603200615]] orderUserForm:map[name:胡晓东 mobile:13761764141 id:3159]]
+2017-03-25/15:08:21 [DEBUG] controller/orderController.go 32 ma: map[orderForm:map[selectPersons:[] selectContacts:[map[idcard:310228198603200615 id:3256 name:胡晓东 mobile:13761764141]] orderUserForm:map[id:3159 name:胡晓东 mobile:13761764141] lineID:1116 selectPoint:map[ID:16 Name:石化：亭卫南路800号 Orders:1] valCode:790675]]
+2017-03-25/15:08:21 [DEBUG] controller/orderController.go 33 13761764141
+2017-03-25/15:08:21 [DEBUG] controller/orderController.go 35 map[lineID:1116 selectPoint:map[ID:16 Name:石化：亭卫南路800号 Orders:1] valCode:790675 selectPersons:[] selectContacts:[map[id:3256 name:胡晓东 mobile:13761764141 idcard:310228198603200615]] orderUserForm:map[name:胡晓东 mobile:13761764141 id:3159]]
+2017-03-25/15:08:21 [DEBUG] controller/orderController.go 56 [map[id:3256 name:胡晓东 mobile:13761764141 idcard:310228198603200615]]
+2017-03-25/15:10:25 [DEBUG] controller/orderController.go 32 ma: map[orderForm:map[selectContacts:[map[id:3256 name:胡晓东 mobile:13761764141 idcard:310228198603200615]] orderUserForm:map[id:3159 name:胡晓东 mobile:13761764141] lineID:1116 selectPoint:map[ID:16 Name:石化：亭卫南路800号 Orders:1] valCode:790675 selectPersons:[]]]
+2017-03-25/15:10:25 [DEBUG] controller/orderController.go 33 13761764141
+2017-03-25/15:10:25 [DEBUG] controller/orderController.go 35 map[selectPoint:map[ID:16 Name:石化：亭卫南路800号 Orders:1] valCode:790675 selectPersons:[] selectContacts:[map[mobile:13761764141 idcard:310228198603200615 id:3256 name:胡晓东]] orderUserForm:map[id:3159 name:胡晓东 mobile:13761764141] lineID:1116]
+2017-03-25/15:11:06 [DEBUG] controller/orderController.go 32 ma: map[orderForm:map[lineID:1116 selectPoint:map[ID:16 Name:石化：亭卫南路800号 Orders:1] valCode:790675 selectPersons:[] selectContacts:[map[idcard:310228198603200615 id:3256 name:胡晓东 mobile:13761764141]] orderUserForm:map[id:3159 name:胡晓东 mobile:13761764141]]]
+2017-03-25/15:11:06 [DEBUG] controller/orderController.go 33 13761764141
+2017-03-25/15:11:06 [DEBUG] controller/orderController.go 35 map[selectContacts:[map[id:3256 name:胡晓东 mobile:13761764141 idcard:310228198603200615]] orderUserForm:map[id:3159 name:胡晓东 mobile:13761764141] lineID:1116 selectPoint:map[ID:16 Name:石化：亭卫南路800号 Orders:1] valCode:790675 selectPersons:[]]
+2017-03-25/15:11:06 [DEBUG] controller/orderController.go 56 [map[id:3256 name:胡晓东 mobile:13761764141 idcard:310228198603200615]]
+2017-03-25/22:13:34 [DEBUG] controller/orderController.go 34 ma: map[orderForm:map[valCode:790675 selectPersons:[] selectContacts:[map[id:3256 name:胡晓东 mobile:13761764141 idcard:310228198603200615]] orderUserForm:map[id:3159 name:胡晓东 mobile:13761764141] lineID:1116 selectPoint:map[ID:16 Name:石化：亭卫南路800号 Orders:1]]]
+2017-03-25/22:13:34 [DEBUG] controller/orderController.go 35 13761764141
+2017-03-25/22:13:34 [DEBUG] controller/orderController.go 37 map[selectPoint:map[Orders:1 ID:16 Name:石化：亭卫南路800号] valCode:790675 selectPersons:[] selectContacts:[map[id:3256 name:胡晓东 mobile:13761764141 idcard:310228198603200615]] orderUserForm:map[id:3159 name:胡晓东 mobile:13761764141] lineID:1116]
+2017-03-25/22:13:35 [DEBUG] controller/orderController.go 113 sino: 00419
+2017-03-25/22:13:35 [DEBUG] controller/orderController.go 115 2017032500419
+2017-03-25/22:13:38 [DEBUG] controller/controller.go 48 mobile: 13761764141
+2017-03-25/22:13:38 [DEBUG] controller/controller.go 49 smstype: 1
+2017-03-25/22:13:38 [DEBUG] controller/controller.go 80 uc{8381 0  FillOrder 790675 2017-03-25 15:22:04 +0800 CST 2017-03-25 15:02:04 +0800 CST 13761764141}
+2017-03-25/22:13:38 [DEBUG] util/commutil.go 194 http://gw.api.taobao.com/router/rest?app_key=23667852&format=json&method=alibaba.aliqin.fc.sms.num.send&rec_num=13761764141&sign=518157DB2A014A35EDBCEC71E0A10A74&sign_method=md5&sms_free_sign_name=%E9%87%91%E5%B1%B1%E6%88%B7%E5%A4%96%E7%BD%91&sms_param=%7B%22code%22%3A%22991309%22%2C%22valid%22%3A%2220%22%7D&sms_template_code=SMS_53735171&sms_type=normal&timestamp=2017-03-25+22%3A13%3A38&v=2.0
+2017-03-25/22:13:39 [DEBUG] controller/controller.go 120 suc: trueresp: {"alibaba_aliqin_fc_sms_num_send_response":{"result":{"err_code":"0","model":"106594204223^1108956357176","success":true},"request_id":"rxw56ill9x9l"}}err: <nil>
+2017-03-25/22:13:59 [DEBUG] controller/controller.go 48 mobile: 13761764141
+2017-03-25/22:13:59 [DEBUG] controller/controller.go 49 smstype: 1
+2017-03-25/22:13:59 [DEBUG] controller/controller.go 80 uc{8382 0  FillOrder 991309 2017-03-25 22:33:39 +0800 CST 2017-03-25 22:13:39 +0800 CST 13761764141}
+2017-03-25/22:13:59 [DEBUG] controller/controller.go 83 time: -19.65847479785
+2017-03-25/22:13:59 [DEBUG] controller/controller.go 84 expired: 20
+2017-03-25/22:14:02 [DEBUG] controller/orderController.go 34 ma: map[orderForm:map[valCode:991309 selectPersons:[] selectContacts:[map[id:3256 name:胡晓东 mobile:13761764141 idcard:310228198603200615]] orderUserForm:map[id:3159 name:胡晓东 mobile:13761764141] lineID:1116 selectPoint:map[ID:16 Name:石化：亭卫南路800号 Orders:1]]]
+2017-03-25/22:14:02 [DEBUG] controller/orderController.go 35 13761764141
+2017-03-25/22:14:02 [DEBUG] controller/orderController.go 37 map[selectPoint:map[ID:16 Name:石化：亭卫南路800号 Orders:1] valCode:991309 selectPersons:[] selectContacts:[map[mobile:13761764141 idcard:310228198603200615 id:3256 name:胡晓东]] orderUserForm:map[id:3159 name:胡晓东 mobile:13761764141] lineID:1116]
+2017-03-25/22:14:02 [DEBUG] controller/orderController.go 113 sino: 00419
+2017-03-25/22:14:02 [DEBUG] controller/orderController.go 115 2017032500419
+2017-03-25/22:15:03 [DEBUG] controller/orderController.go 34 ma: map[orderForm:map[selectContacts:[map[id:3256 name:胡晓东 mobile:13761764141 idcard:310228198603200615]] orderUserForm:map[name:胡晓东 mobile:13761764141 id:3159] lineID:1116 selectPoint:map[ID:16 Name:石化：亭卫南路800号 Orders:1] valCode:991309 selectPersons:[]]]
+2017-03-25/22:15:03 [DEBUG] controller/orderController.go 35 13761764141
+2017-03-25/22:15:03 [DEBUG] controller/orderController.go 37 map[valCode:991309 selectPersons:[] selectContacts:[map[id:3256 name:胡晓东 mobile:13761764141 idcard:310228198603200615]] orderUserForm:map[id:3159 name:胡晓东 mobile:13761764141] lineID:1116 selectPoint:map[Name:石化：亭卫南路800号 Orders:1 ID:16]]
+2017-03-25/22:15:03 [DEBUG] controller/orderController.go 113 sino: 00419
+2017-03-25/22:15:03 [DEBUG] controller/orderController.go 115 2017032500419
+2017-03-25/22:42:36 [DEBUG] controller/orderController.go 34 ma: map[orderForm:map[selectContacts:[map[id:3256 name:胡晓东 mobile:13761764141 idcard:310228198603200615]] orderUserForm:map[id:3159 name:胡晓东 mobile:13761764141] lineID:1116 selectPoint:map[ID:16 Name:石化：亭卫南路800号 Orders:1] valCode:991309 selectPersons:[]]]
+2017-03-25/22:42:36 [DEBUG] controller/orderController.go 35 13761764141
+2017-03-25/22:42:36 [DEBUG] controller/orderController.go 37 map[lineID:1116 selectPoint:map[ID:16 Name:石化：亭卫南路800号 Orders:1] valCode:991309 selectPersons:[] selectContacts:[map[id:3256 name:胡晓东 mobile:13761764141 idcard:310228198603200615]] orderUserForm:map[name:胡晓东 mobile:13761764141 id:3159]]
+2017-03-25/22:42:37 [DEBUG] controller/orderController.go 113 sino: 00419
+2017-03-25/22:42:37 [DEBUG] controller/orderController.go 115 2017032500419
+2017-03-25/22:43:24 [DEBUG] controller/orderController.go 34 ma: map[orderForm:map[selectPoint:map[Name:石化：亭卫南路800号 Orders:1 ID:16] valCode:991309 selectPersons:[] selectContacts:[map[mobile:13761764141 idcard:310228198603200615 id:3256 name:胡晓东]] orderUserForm:map[id:3159 name:胡晓东 mobile:13761764141] lineID:1116]]
+2017-03-25/22:43:24 [DEBUG] controller/orderController.go 35 13761764141
+2017-03-25/22:43:24 [DEBUG] controller/orderController.go 37 map[lineID:1116 selectPoint:map[ID:16 Name:石化：亭卫南路800号 Orders:1] valCode:991309 selectPersons:[] selectContacts:[map[id:3256 name:胡晓东 mobile:13761764141 idcard:310228198603200615]] orderUserForm:map[id:3159 name:胡晓东 mobile:13761764141]]
+2017-03-25/22:43:25 [DEBUG] controller/orderController.go 113 sino: 00419
+2017-03-25/22:43:25 [DEBUG] controller/orderController.go 115 2017032500419
+2017-03-25/22:44:40 [DEBUG] controller/orderController.go 34 ma: map[orderForm:map[valCode:991309 selectPersons:[] selectContacts:[map[mobile:13761764141 idcard:310228198603200615 id:3256 name:胡晓东]] orderUserForm:map[id:3159 name:胡晓东 mobile:13761764141] lineID:1116 selectPoint:map[ID:16 Name:石化：亭卫南路800号 Orders:1]]]
+2017-03-25/22:44:40 [DEBUG] controller/orderController.go 35 13761764141
+2017-03-25/22:44:40 [DEBUG] controller/orderController.go 37 map[selectPoint:map[ID:16 Name:石化：亭卫南路800号 Orders:1] valCode:991309 selectPersons:[] selectContacts:[map[mobile:13761764141 idcard:310228198603200615 id:3256 name:胡晓东]] orderUserForm:map[id:3159 name:胡晓东 mobile:13761764141] lineID:1116]
+2017-03-25/22:44:40 [DEBUG] controller/orderController.go 113 sino: 00419
+2017-03-25/22:44:40 [DEBUG] controller/orderController.go 115 2017032500419
+2017-03-25/22:44:40 [DEBUG] util/commutil.go 115 genderStr: 1
+2017-03-25/22:45:14 [DEBUG] controller/orderController.go 34 ma: map[orderForm:map[valCode:991309 selectPersons:[] selectContacts:[map[id:3256 name:胡晓东 mobile:13761764141 idcard:310228198603200615]] orderUserForm:map[id:3159 name:胡晓东 mobile:13761764141] lineID:1116 selectPoint:map[ID:16 Name:石化：亭卫南路800号 Orders:1]]]
+2017-03-25/22:45:14 [DEBUG] controller/orderController.go 35 13761764141
+2017-03-25/22:45:14 [DEBUG] controller/orderController.go 37 map[selectPoint:map[Orders:1 ID:16 Name:石化：亭卫南路800号] valCode:991309 selectPersons:[] selectContacts:[map[id:3256 name:胡晓东 mobile:13761764141 idcard:310228198603200615]] orderUserForm:map[id:3159 name:胡晓东 mobile:13761764141] lineID:1116]
+2017-03-25/22:45:14 [DEBUG] controller/orderController.go 113 sino: 00419
+2017-03-25/22:45:14 [DEBUG] controller/orderController.go 115 2017032500419
+2017-03-25/22:45:14 [DEBUG] util/commutil.go 115 ==============================genderStr: 1

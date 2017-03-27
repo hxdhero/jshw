@@ -1,0 +1,47 @@
+2017-03-16/16:26:12 [DEBUG] controller/controller.go 48 mobile: 
+2017-03-16/16:26:12 [DEBUG] controller/controller.go 49 smstype: 
+2017-03-16/22:52:05 [DEBUG] controller/controller.go 48 mobile: 13761764141
+2017-03-16/22:52:05 [DEBUG] controller/controller.go 49 smstype: 1
+2017-03-16/22:52:05 [DEBUG] controller/controller.go 80 uc{7325 0  FillOrder 452420 2017-03-13 20:55:36.267 +0800 CST 2017-03-13 20:35:36.267 +0800 CST 13761764141}
+2017-03-16/22:52:05 [DEBUG] util/commutil.go 174 http://gw.api.taobao.com/router/rest?app_key=23667852&format=json&method=alibaba.aliqin.fc.sms.num.send&rec_num=13761764141&sign=DC13264ADC6963F906C7B412735C0A24&sign_method=md5&sms_free_sign_name=%E9%87%91%E5%B1%B1%E6%88%B7%E5%A4%96%E7%BD%91&sms_param=%7B%22code%22%3A%22063386%22%2C%22valid%22%3A%2220%22%7D&sms_template_code=SMS_53735171&sms_type=normal&timestamp=2017-03-16+22%3A52%3A05&v=2.0
+2017-03-16/22:52:06 [DEBUG] controller/controller.go 120 suc: trueresp: {"alibaba_aliqin_fc_sms_num_send_response":{"result":{"err_code":"0","model":"106430764813^1108728819292","success":true},"request_id":"13oz9awtxo6u7"}}err: <nil>
+2017-03-16/23:44:55 [DEBUG] controller/controller.go 48 mobile: 13761764141
+2017-03-16/23:44:55 [DEBUG] controller/controller.go 49 smstype: 1
+2017-03-16/23:44:55 [DEBUG] controller/controller.go 80 uc{7358 0  FillOrder 063386 2017-03-16 23:12:06 +0800 CST 2017-03-16 22:52:06 +0800 CST 13761764141}
+2017-03-16/23:44:55 [DEBUG] util/commutil.go 174 http://gw.api.taobao.com/router/rest?app_key=23667852&format=json&method=alibaba.aliqin.fc.sms.num.send&rec_num=13761764141&sign=B7E0B8EF62ECB2E8B1A7F9A078C73712&sign_method=md5&sms_free_sign_name=%E9%87%91%E5%B1%B1%E6%88%B7%E5%A4%96%E7%BD%91&sms_param=%7B%22code%22%3A%22838396%22%2C%22valid%22%3A%2220%22%7D&sms_template_code=SMS_53735171&sms_type=normal&timestamp=2017-03-16+23%3A44%3A55&v=2.0
+2017-03-16/23:44:57 [DEBUG] controller/controller.go 120 suc: trueresp: {"alibaba_aliqin_fc_sms_num_send_response":{"result":{"err_code":"0","model":"106430929136^1108729151003","success":true},"request_id":"3btgtbbsl0n4"}}err: <nil>
+2017-03-16/23:45:16 [DEBUG] controller/controller.go 48 mobile: 13761764141
+2017-03-16/23:45:16 [DEBUG] controller/controller.go 49 smstype: 1
+2017-03-16/23:45:16 [DEBUG] controller/controller.go 80 uc{7359 0  FillOrder 838396 2017-03-17 00:04:57 +0800 CST 2017-03-16 23:44:57 +0800 CST 13761764141}
+2017-03-16/23:45:16 [DEBUG] controller/controller.go 83 time: -19.68129352875
+2017-03-16/23:45:16 [DEBUG] controller/controller.go 84 expired: 20
+2017-03-16/23:45:53 [DEBUG] controller/controller.go 48 mobile: 13761764141
+2017-03-16/23:45:53 [DEBUG] controller/controller.go 49 smstype: 1
+2017-03-16/23:45:53 [DEBUG] controller/controller.go 80 uc{7359 0  FillOrder 838396 2017-03-17 00:04:57 +0800 CST 2017-03-16 23:44:57 +0800 CST 13761764141}
+2017-03-16/23:45:53 [DEBUG] controller/controller.go 83 time: -19.0520501797
+2017-03-16/23:45:53 [DEBUG] controller/controller.go 84 expired: 20
+2017-03-16/23:46:41 [DEBUG] controller/controller.go 48 mobile: 13761764141
+2017-03-16/23:46:41 [DEBUG] controller/controller.go 49 smstype: 1
+2017-03-16/23:46:41 [DEBUG] controller/controller.go 80 uc{7359 0  FillOrder 838396 2017-03-17 00:04:57 +0800 CST 2017-03-16 23:44:57 +0800 CST 13761764141}
+2017-03-16/23:46:41 [DEBUG] controller/controller.go 83 time: -18.26251447705
+2017-03-16/23:46:41 [DEBUG] controller/controller.go 84 expired: 20
+2017-03-16/23:47:05 [DEBUG] controller/controller.go 48 mobile: 13761764141
+2017-03-16/23:47:05 [DEBUG] controller/controller.go 49 smstype: 1
+2017-03-16/23:47:05 [DEBUG] controller/controller.go 80 uc{7359 0  FillOrder 838396 2017-03-17 00:04:57 +0800 CST 2017-03-16 23:44:57 +0800 CST 13761764141}
+2017-03-16/23:47:05 [DEBUG] controller/controller.go 83 time: -17.851839761
+2017-03-16/23:47:05 [DEBUG] controller/controller.go 84 expired: 20
+2017-03-16/23:49:10 [DEBUG] controller/controller.go 48 mobile: 13761764141
+2017-03-16/23:49:10 [DEBUG] controller/controller.go 49 smstype: 1
+2017-03-16/23:49:10 [DEBUG] controller/controller.go 80 uc{7359 0  FillOrder 838396 2017-03-17 00:04:57 +0800 CST 2017-03-16 23:44:57 +0800 CST 13761764141}
+2017-03-16/23:49:10 [DEBUG] controller/controller.go 83 time: -15.775918700633333
+2017-03-16/23:49:10 [DEBUG] controller/controller.go 84 expired: 20
+2017-03-16/23:50:09 [DEBUG] controller/controller.go 48 mobile: 13761764141
+2017-03-16/23:50:09 [DEBUG] controller/controller.go 49 smstype: 1
+2017-03-16/23:50:10 [DEBUG] controller/controller.go 80 uc{7359 0  FillOrder 838396 2017-03-17 00:04:57 +0800 CST 2017-03-16 23:44:57 +0800 CST 13761764141}
+2017-03-16/23:50:10 [DEBUG] controller/controller.go 83 time: -14.782542875716667
+2017-03-16/23:50:10 [DEBUG] controller/controller.go 84 expired: 20
+2017-03-16/23:50:30 [DEBUG] controller/controller.go 48 mobile: 13761764141
+2017-03-16/23:50:30 [DEBUG] controller/controller.go 49 smstype: 1
+2017-03-16/23:50:30 [DEBUG] controller/controller.go 80 uc{7359 0  FillOrder 838396 2017-03-17 00:04:57 +0800 CST 2017-03-16 23:44:57 +0800 CST 13761764141}
+2017-03-16/23:50:30 [DEBUG] controller/controller.go 83 time: -14.4388155989
+2017-03-16/23:50:30 [DEBUG] controller/controller.go 84 expired: 20
