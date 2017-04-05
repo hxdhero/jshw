@@ -1,4 +1,61 @@
 package main
+
+import (
+	"net/url"
+	"strings"
+	"crypto/md5"
+	"encoding/hex"
+	"log"
+)
+
+func wx() {
+	appID := "wx4799ba69be0a41ad"
+	mchID := "1275229801"
+	nonce_str := "5K8264ILTKCH16CQ2502SI8ZNMTM67VS"
+	body := "线路详情-线路预订"
+	out_trade_no := "20150806125346"
+	total_fee := "0.5"
+	spbill_create_ip := "123.12.12.123"
+	notify_url := "http://www.easytool.site"
+	trade_type := "MWEB"
+	scene_info := `{"h5_info": {"type":"Wap","wap_url": "https://www.easytool.site","wap_name": "金山户外"}}`
+	key := "55014f2906d9f628124874497e8fb16f"
+	//sign:=""
+
+	uv := url.Values{}
+	uv.Set("appid", appID)
+	uv.Set("mch_id", mchID)
+	uv.Set("nonce_str", nonce_str)
+	uv.Set("body", body)
+	uv.Set("out_trade_no", out_trade_no)
+	uv.Set("total_fee", total_fee)
+	uv.Set("spbill_create_ip", spbill_create_ip)
+	uv.Set("notify_url", notify_url)
+	uv.Set("trade_type", trade_type)
+	uv.Set("scene_info", scene_info)
+	//log.Println(uv)
+	//keys := []string{}
+	//for k, _ := range uv {
+	//	keys = append(keys, k)
+	//}
+	//sort.Strings(keys)
+	//for _, elem := range keys {
+	//	log.Println(elem)
+	//	uv.Set(elem, uv.Get(elem))
+	//}
+	paramStr := uv.Encode()
+	log.Println(paramStr)
+	signStr := paramStr + "&key=" + key
+	sign := GetMd5String(signStr)
+	log.Println(strings.ToUpper(sign))
+
+}
+
+func GetMd5String(s string) string {
+	h := md5.New()
+	h.Write([]byte(s)) //使用zhifeiya名字做散列值，设定后不要变
+	return hex.EncodeToString(h.Sum(nil))
+}
 /*
 
 import (
