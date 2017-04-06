@@ -15,7 +15,13 @@ import (
 	"fmt"
 	"crypto/rand"
 	"encoding/base64"
+	"sort"
+	"bytes"
 )
+
+func main() {
+	alih5new()
+}
 
 func wx() {
 	appID := "wx4799ba69be0a41ad"
@@ -67,9 +73,13 @@ func GetMd5String(s string) string {
 }
 
 func alih5new() {
-	privateKey := "MIICXgIBAAKBgQCi+NGFyyhFnMl39Crxc0Yomoen1rkjNf7SQhp0ec5554BXk98xLc8HeklR6kSlpnU0RQ+v2awolEMMFryqZHbz8V9wF6q8vAF2dKgAYCyqDyJZjxOKCiE7H421kC2vo4VQHEXzi6OHuAFD4RLnuXIJuswXAZ/2Jt4kDx5qrAMxsQIDAQABAoGBAKCI83OVDMWNzVOxHIAdajXjCtAFDvglXy9k2ER2HDMvHNioHAqIslAOYJ0lZJu8XeWwReSWSiTq7yTAXPaH4jeVlhk+TwCtRNq4l8akXzAv6H6ztWG2mUePkxxU61CNnVVH6QxpESaKdTTFrum9w1A3S+FR65GSCuUyTKv9vellAkEA09dyJILVaV8ALrJG5mwLZl4uYP8j6ALgX7KmOFnit4mx7rszcVgJznL9k9kiNXFV3+3QnME+ufTTq+ilqwce2wJBAMTxh7idyijWFbMx959EQH2MNZGa7Ciuda39D3ZAgShQc7Tg+omlxIoKQTLSG6jCNeSNNcR8fEcbRjUVgVPCuWMCQQC+oW7eujmPo+THILi6m9m6WeBEevR10TjWBS6dIQ3q+eb7nMwTIBVbCZF1XXzyOLX9V8VVenSW5GEinq2OdU7nAkBG1F7thMI6IZS4V9Yoz5EqFg0GCuO4VdY49vRioRxSdWzHtsokSxv+UWXVcz9DWGWthyO5QNQpdqOvX8ada0DlAkEAqag+nbgIY1XdPzvRegCfOKmnecf+B2gW2Auq5JqVIqBww5RSw2vJOfQ5k2eYFHJcvpchPTQS0hyf43kvijY4jg=="
+	privateKey := "MIICXAIBAAKBgQDMtmFV5RjuwzmvpdenizGSnR60XF954ynY4t6r9IA7WgeGEFAUfhW5gagbFMpc6FHiUdl29oPjLud+YtWFCkHjobl6bAw0diBAjZeqRBow22RuFzuhrVm3dmVW2vGpAeM25lxSxTSsilwfH+h3I4mV0ySA3t0euIP3ce6rykKIbwIDAQABAoGAUWLEycheJDZ7TaiqVxLQr5BFr8D1uFimv3JawpRfErmVOihsHemOq4Svl6ypU0yNmWOfCFuzTXPNVwLmDpFoZefrcSIw61/6l6R2lCHvk8BNJ40gU573I/UlxNCOL9DiW2ooQIGS+uKV551tFsfG1O8MSZ88KDRoMcqcugPH/4ECQQD0z04J8VUjlYzhSuslS4XajW7dEJjJYWq15osNqaA5PgICkeaR5Pz9Wk8ztElhu0+/dC35cl8hEVQxO5LZikwvAkEA1hHeChGzIQCrQI14YehYQVWgttfqIl0FOvEVzaogjPbfRDhcrZVNxeNhjRFTfN/xTgeWDqf+1PrsZ43Iyi83wQJBANxKUyH1TTSZFU2B2fkUbZ2N2W4JykKka57Flukzc18vIiXn3j/4e4MLqeuP1tyf7hIM3HXz6hBahJVM00b4ALcCQGO1wtSx1dvjceEJhC8miCU2eztvarFC3rLLpLo9Khg+zVP7ZL+9sZIhDUkl7ttVfBI6WlzNR1dw4TiCxCnYwIECQGTZAaBbqPeBiPMe5wfnOACBgposX+lqKRlPIxAE2LaExJw/oZbaBp6TqWcT/7m2vyD3b5gOaAlW+NEjjtr1NeE="
 	//base
-	appid := "2017040106522852"
+
+	payUrl:="https://openapi.alipaydev.com/gateway.do"//沙箱地址
+	appid := "2016080300158632"//沙箱环境
+	//appid:="2017040106522852"//正式坏境
+	//payUrl:="https://openapi.alipay.com/gateway.do"//正式环境
 	method := "alipay.trade.wap.pay"
 	charset := "utf-8"
 	sign_type := "RSA"
@@ -101,8 +111,26 @@ func alih5new() {
 	uv.Set("timestamp", timestamp)
 	uv.Set("version", version)
 	uv.Set("biz_content", biz_content)
-	uvStr := uv.Encode()
-	sign, err := Sha1WithRSABase64(uvStr, privateKey)
+	paramKeys:=[]string{}
+	for k:=range uv{
+		paramKeys=append(paramKeys,k)
+	}
+	sort.Strings(paramKeys)
+	var buf bytes.Buffer
+	for _, k := range paramKeys {
+		vs := uv[k]
+		prefix := k + "="
+		for _, v := range vs {
+			if buf.Len() > 0 {
+				buf.WriteByte('&')
+			}
+			buf.WriteString(prefix)
+			buf.WriteString(v)
+		}
+	}
+	bufStr:=buf.String()
+	log.Println("待签名: ",bufStr)
+	sign, err := Sha1WithRSABase64(bufStr, privateKey)
 	if err != nil {
 		log.Println(err)
 	}
@@ -110,6 +138,13 @@ func alih5new() {
 	uv.Set("sign", sign)
 	body := uv.Encode()
 	log.Println("body:  ", body)
+	uri,err:=url.Parse(payUrl)
+	if err != nil {
+		log.Println(err)
+	}
+	uri.RawQuery=body
+	log.Println("======  ",uri.String())
+
 }
 
 
