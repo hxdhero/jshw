@@ -6,6 +6,15 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"log"
+	"time"
+	"encoding/json"
+	"crypto/x509"
+	"crypto/sha1"
+	"crypto/rsa"
+	"crypto"
+	"fmt"
+	"crypto/rand"
+	"encoding/base64"
 )
 
 func wx() {
@@ -56,6 +65,107 @@ func GetMd5String(s string) string {
 	h.Write([]byte(s)) //使用zhifeiya名字做散列值，设定后不要变
 	return hex.EncodeToString(h.Sum(nil))
 }
+
+func alih5new() {
+	privateKey := "MIICXgIBAAKBgQCi+NGFyyhFnMl39Crxc0Yomoen1rkjNf7SQhp0ec5554BXk98xLc8HeklR6kSlpnU0RQ+v2awolEMMFryqZHbz8V9wF6q8vAF2dKgAYCyqDyJZjxOKCiE7H421kC2vo4VQHEXzi6OHuAFD4RLnuXIJuswXAZ/2Jt4kDx5qrAMxsQIDAQABAoGBAKCI83OVDMWNzVOxHIAdajXjCtAFDvglXy9k2ER2HDMvHNioHAqIslAOYJ0lZJu8XeWwReSWSiTq7yTAXPaH4jeVlhk+TwCtRNq4l8akXzAv6H6ztWG2mUePkxxU61CNnVVH6QxpESaKdTTFrum9w1A3S+FR65GSCuUyTKv9vellAkEA09dyJILVaV8ALrJG5mwLZl4uYP8j6ALgX7KmOFnit4mx7rszcVgJznL9k9kiNXFV3+3QnME+ufTTq+ilqwce2wJBAMTxh7idyijWFbMx959EQH2MNZGa7Ciuda39D3ZAgShQc7Tg+omlxIoKQTLSG6jCNeSNNcR8fEcbRjUVgVPCuWMCQQC+oW7eujmPo+THILi6m9m6WeBEevR10TjWBS6dIQ3q+eb7nMwTIBVbCZF1XXzyOLX9V8VVenSW5GEinq2OdU7nAkBG1F7thMI6IZS4V9Yoz5EqFg0GCuO4VdY49vRioRxSdWzHtsokSxv+UWXVcz9DWGWthyO5QNQpdqOvX8ada0DlAkEAqag+nbgIY1XdPzvRegCfOKmnecf+B2gW2Auq5JqVIqBww5RSw2vJOfQ5k2eYFHJcvpchPTQS0hyf43kvijY4jg=="
+	//base
+	appid := "2017040106522852"
+	method := "alipay.trade.wap.pay"
+	charset := "utf-8"
+	sign_type := "RSA"
+	timestamp := time.Now().Format("2006-01-02 15:04:05")
+	version := "1.0"
+
+	//biz
+	subject := "大乐透"
+	out_trade_no := "70501111111S001111119"
+	total_amount := "0.5"
+	product_code := "QUICK_WAP_PAY"
+
+	bizMap := map[string]string{}
+	bizMap["subject"] = subject
+	bizMap["out_trade_no"] = out_trade_no
+	bizMap["total_amount"] = total_amount
+	bizMap["product_code"] = product_code
+	bizByte, err := json.Marshal(bizMap)
+	if err != nil {
+		log.Println(err)
+	}
+	biz_content := string(bizByte)
+
+	uv := url.Values{}
+	uv.Set("app_id", appid)
+	uv.Set("method", method)
+	uv.Set("charset", charset)
+	uv.Set("sign_type", sign_type)
+	uv.Set("timestamp", timestamp)
+	uv.Set("version", version)
+	uv.Set("biz_content", biz_content)
+	uvStr := uv.Encode()
+	sign, err := Sha1WithRSABase64(uvStr, privateKey)
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println("sign:  ", sign)
+	uv.Set("sign", sign)
+	body := uv.Encode()
+	log.Println("body:  ", body)
+}
+
+
+func Sha1WithRSABase64(data string, privatekey string) (string, error) {
+	key, _ := base64.StdEncoding.DecodeString(privatekey)
+	privateKey, _ := x509.ParsePKCS1PrivateKey(key)
+	h := sha1.New()
+	h.Write([]byte([]byte(data)))
+	hash := h.Sum(nil)
+	signature, err := rsa.SignPKCS1v15(rand.Reader, privateKey, crypto.SHA1, hash[:])
+	if err != nil {
+		fmt.Printf("Error from signing: %s\n", err)
+		return "", err
+	}
+	out := base64.StdEncoding.EncodeToString(signature)
+	return out, nil
+}
+
+
+func alih5old() {
+	md5key := "p8h3q7ymgzmzh6zxsiqplr772tk5ssd1"
+
+	//basicParam
+	service := "alipay.wap.create.direct.pay.by.user"
+	partner := "2088811282157771"
+	_input_charset := "UTF-8"
+	sign_type := "MD5"
+
+	//bizParam
+	out_trade_no := "70501111111S001111119"
+	subject := "户外线路"
+	total_fee := "0.5"
+	seller_id := "2088811282157771"
+	showUrl := "http://www.taobao.com/product/113714.html"
+
+	uv := url.Values{}
+	uv.Set("service", service)
+	uv.Set("partner", partner)
+	uv.Set("_input_charset", _input_charset)
+	uv.Set("out_trade_no", out_trade_no)
+	uv.Set("subject", subject)
+	uv.Set("total_fee", total_fee)
+	uv.Set("seller_id", seller_id)
+	uv.Set("payment_type", "1")
+	uv.Set("show_url", showUrl)
+	uvStr := uv.Encode()
+	md5Ctx := md5.New()
+	md5Ctx.Write([]byte(uvStr))
+	cipherStr := md5Ctx.Sum([]byte(md5key))
+	sign := hex.EncodeToString(cipherStr)
+	log.Println("sign: ", string(sign))
+	uv.Set("sign_type", sign_type)
+	uv.Set("sign", string(sign))
+	log.Println(uv.Encode())
+}
+
 /*
 
 import (
