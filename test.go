@@ -6,9 +6,43 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"log"
+	"encoding/xml"
 )
 
+func main(){
+	log.SetFlags(log.Llongfile|log.Ldate)
+	wx()
+}
+
+type TT struct {
+	MM string `xml:",cdata"`
+}
+
+
+
+type WXH5 struct {
+	XMLName xml.Name `xml:"xml"`
+	AppID string `xml:"appid"`
+	MchID string `xml:"mch_id"`
+	NonceStr string `xml:"nonce_str"`
+	Body string `xml:"body"`
+	TradeNO string `xml:"out_trade_no"`
+	TotalFee string `xml:"total_fee"`
+	IP string `xml:"spbill_create_ip"`
+	NotifyURL string `xml:"notify_url"`
+	TradeType string `xml:"trade_type"`
+	SceneInfo TT `xml:"scene_info"`
+	//SceneInfo string `xml:"scenen_info"`
+	Sign string `xml:"sign"`
+}
+
 func wx() {
+	defer func() {
+		if err:=recover();err!=nil{
+			log.Println(err.(error).Error())
+		}
+	}()
+
 	appID := "wx4799ba69be0a41ad"
 	mchID := "1275229801"
 	nonce_str := "5K8264ILTKCH16CQ2502SI8ZNMTM67VS"
@@ -49,7 +83,29 @@ func wx() {
 	sign := GetMd5String(signStr)
 	log.Println(strings.ToUpper(sign))
 
+	wxData:=WXH5{
+		AppID:appID,
+		MchID:mchID,
+		NonceStr:nonce_str,
+		Body:body,
+		TradeNO:out_trade_no,
+		TotalFee:total_fee,
+		IP:spbill_create_ip,
+		NotifyURL:notify_url,
+		TradeType:trade_type,
+		SceneInfo:TT{MM:scene_info},
+		//SceneInfo:scene_info,
+		Sign:sign,
+	}
+	xmlByte,err:=xml.Marshal(wxData)
+	if err != nil {
+		panic(err)
+	}
+	xmlStr:=string(xmlByte)
+	log.Println(xmlStr)
 }
+
+
 
 func GetMd5String(s string) string {
 	h := md5.New()
