@@ -14,6 +14,9 @@ import (
 	"local/jshw/logic"
 	"local/jshw/model/sms"
 	"strconv"
+	"sort"
+	"bytes"
+	"strings"
 )
 
 //返回错误信息
@@ -45,8 +48,8 @@ func SendCodeSMS(c *gin.Context) {
 	respData := map[string]interface{}{}
 	mobile := c.PostForm("mobile") //接收短信的手机号
 	smsType := c.PostForm("type")  //短信类型:1提交订单验证码
-	seelog.Debug("mobile: ",mobile)
-	seelog.Debug("smstype: ",smsType)
+	seelog.Debug("mobile: ", mobile)
+	seelog.Debug("smstype: ", smsType)
 	//校验手机
 	if util.IsNull(mobile) || len(mobile) < 11 {
 		ReturnErrorStr(c, "手机号错误")
@@ -64,7 +67,7 @@ func SendCodeSMS(c *gin.Context) {
 		return
 	}
 	//查询用户验证码 手机号,验证码类型
-	_,err:=logic.GetUserCode(&uc)
+	_, err := logic.GetUserCode(&uc)
 	if err != nil {
 		seelog.Error(err)
 		return
@@ -77,11 +80,11 @@ func SendCodeSMS(c *gin.Context) {
 		return
 	}
 	//如果验证码存在则判断时间是否过期
-	seelog.Debug("uc",uc)
+	seelog.Debug("uc", uc)
 	if !util.IsNull(uc.CodeStr) {
 		if (time.Now().Sub(uc.EffTime).Minutes() <= float64(expiredInt)) {
-			seelog.Debug("time: ",time.Now().Sub(uc.EffTime).Minutes())
-			seelog.Debug("expired: ",expiredInt)
+			seelog.Debug("time: ", time.Now().Sub(uc.EffTime).Minutes())
+			seelog.Debug("expired: ", expiredInt)
 			ReturnErrorStr(c, "您的验证码还未过期")
 			return
 		}
@@ -102,7 +105,7 @@ func SendCodeSMS(c *gin.Context) {
 	smsParam := map[string]interface{}{}
 	switch smsType {
 	case "1":
-		smsParam["code"] = valCode                              //验证码
+		smsParam["code"] = valCode                                //验证码
 		smsParam["valid"] = conf.AppConfig.String("code_expired") //有效期
 	default:
 		seelog.Error("发送短信请求,smsType: ", smsType)
@@ -117,7 +120,7 @@ func SendCodeSMS(c *gin.Context) {
 	}
 	alisms.SMSParam["sms_param"] = string(jsonStr)
 	suc, resp, err := alisms.SendSMS()
-	seelog.Debug("suc: ",suc,"resp: ",resp,"err: ",err)
+	seelog.Debug("suc: ", suc, "resp: ", resp, "err: ", err)
 	if err != nil {
 		seelog.Error(err)
 		ReturnErrorStr(c, "短信发送失败,请拨打客服电话")
@@ -127,10 +130,10 @@ func SendCodeSMS(c *gin.Context) {
 		uc.AddTime = time.Now()
 		uc.EffTime = time.Now().Add(time.Duration(expiredInt) * time.Minute)
 		uc.CodeStr = valCode
-		err=logic.AddUserCode(&uc)
+		err = logic.AddUserCode(&uc)
 		if err != nil {
 			seelog.Error(err)
-			ReturnErrorStr(c,"内部错误")
+			ReturnErrorStr(c, "内部错误")
 			return
 		}
 		respData["suc"] = true
@@ -139,8 +142,55 @@ func SendCodeSMS(c *gin.Context) {
 	} else {
 		json.Unmarshal([]byte(resp), &respData)
 		seelog.Error(respData["error_response"].(map[string]interface{})["msg"])
-		ReturnErrorStr(c,respData["error_response"].(map[string]interface{})["msg"].(string))
+		ReturnErrorStr(c, respData["error_response"].(map[string]interface{})["msg"].(string))
 		return
+	}
+}
+
+//支付宝回调接口
+func AliNotify(c *gin.Context) {
+	defer func() {
+		recover()
+	}()
+	seelog.Flush() //打印日志
+	c.Request.ParseForm()
+	urlValues := c.Request.Form
+	//支付宝给回的签名
+	sign := urlValues["sign"][0]
+	signArray := []string{}
+	for k := range urlValues {
+		if k != "sign" && k != "sign_type" {
+			signArray = append(signArray, k)
+		}
+	}
+	sort.Strings(signArray)
+
+	signParams := map[string]string{}
+	for _, elem := range signArray {
+		signParams[elem] = urlValues[elem][0]
+	}
+
+	strArray := []string{}
+	for k, v := range signParams {
+		strArray = append(strArray, k+"="+v)
+	}
+	//得到待验签字符串
+	signStr := strings.Join(strArray, "&")
+	signDecode, err := util.Base64Decode(sign)
+	if err != nil {
+		seelog.Error(err)
+		panic(err)
+	}
+
+	tradeNo := urlValues["out_trade_no"][0] //订单号
+	amount := urlValues["total_amount"][0]  //金额
+	sellerID := urlValues["seller_id"][0]   //卖家
+	appID := urlValues["app_id"][0]         //应用id
+	//todo 校验以上4个参数
+	tradeStatus := urlValues["trade_status"][0] //交易状态
+	seelog.Debug(tradeStatus)
+	if tradeStatus == "TRADE_SUCCESS" || tradeStatus == "TRADE_FINISHED" {
+		//订单完成
 	}
 }
 
