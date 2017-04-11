@@ -15,8 +15,9 @@ import (
 	"local/jshw/model/sms"
 	"strconv"
 	"sort"
-	"bytes"
+	"net/http/httputil"
 	"strings"
+	"encoding/base64"
 )
 
 //返回错误信息
@@ -153,6 +154,8 @@ func AliNotify(c *gin.Context) {
 		recover()
 	}()
 	seelog.Flush() //打印日志
+	dump, _ := httputil.DumpRequest(c.Request, true)
+	seelog.Debug("request: ", string(dump))
 	c.Request.ParseForm()
 	urlValues := c.Request.Form
 	//支付宝给回的签名
@@ -174,9 +177,13 @@ func AliNotify(c *gin.Context) {
 	for k, v := range signParams {
 		strArray = append(strArray, k+"="+v)
 	}
+	sort.Strings(strArray)
 	//得到待验签字符串
 	signStr := strings.Join(strArray, "&")
-	signDecode, err := util.Base64Decode(sign)
+	seelog.Debug("signStr: ", signStr)
+	seelog.Debug("base64SignStr: ", base64.StdEncoding.EncodeToString([]byte(signStr)))
+	seelog.Debug("sign: ", sign)
+	err := util.Sha1WithRSAPKCS8Base64VerifySign(signStr, sign, "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDI6d306Q8fIfCOaTXyiUeJHkrIvYISRcc73s3vF1ZT7XN8RNPwJxo8pWaJMmvyTn9N4HQ632qJBVHf8sxHi/fEsraprwCtzvzQETrNRwVxLO5jVmRGi60j8Ue1efIlzPXV9je9mkjzOmdssymZkh2QhUrCmZYI/FCEa3/cNMW0QIDAQAB")
 	if err != nil {
 		seelog.Error(err)
 		panic(err)
@@ -186,6 +193,10 @@ func AliNotify(c *gin.Context) {
 	amount := urlValues["total_amount"][0]  //金额
 	sellerID := urlValues["seller_id"][0]   //卖家
 	appID := urlValues["app_id"][0]         //应用id
+	seelog.Debug("tradeNo: ", tradeNo)
+	seelog.Debug("amount: ", amount)
+	seelog.Debug("sellerID: ", sellerID)
+	seelog.Debug("appID: ", appID)
 	//todo 校验以上4个参数
 	tradeStatus := urlValues["trade_status"][0] //交易状态
 	seelog.Debug(tradeStatus)

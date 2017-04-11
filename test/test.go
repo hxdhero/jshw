@@ -19,6 +19,7 @@ import (
 )
 
 func main() {
+	log.SetFlags(log.Llongfile|log.Ldate)
 	alih5new()
 }
 
@@ -27,6 +28,7 @@ func GetMd5String(s string) string {
 	h := md5.New()
 	h.Write([]byte(s)) //使用zhifeiya名字做散列值，设定后不要变
 	return hex.EncodeToString(h.Sum(nil))
+
 }
 
 func alih5new() {
@@ -42,11 +44,11 @@ func alih5new() {
 	sign_type := "RSA"
 	timestamp := time.Now().Format("2006-01-02 15:04:05")
 	version := "1.0"
-
+	notifyUrl:="http://www.easytool.site/jshw_notify_ali"
 	//biz
 	subject := "大乐透"
-	out_trade_no := "70501111111S001111119"
-	total_amount := "0.5"
+	out_trade_no := "hxd201704110001"
+	total_amount := "0.1"
 	product_code := "QUICK_WAP_PAY"
 
 	bizMap := map[string]string{}
@@ -67,6 +69,7 @@ func alih5new() {
 	uv.Set("sign_type", sign_type)
 	uv.Set("timestamp", timestamp)
 	uv.Set("version", version)
+	uv.Set("notify_url",notifyUrl)
 	uv.Set("biz_content", biz_content)
 	paramKeys:=[]string{}
 	for k:=range uv{
@@ -87,7 +90,7 @@ func alih5new() {
 	}
 	bufStr:=buf.String()
 	log.Println("待签名: ",bufStr)
-	sign, err := Sha1WithRSABase64(bufStr, privateKey)
+	sign, err := Sha1WithRSAPKCS8Base64Sign(bufStr, privateKey)
 	if err != nil {
 		log.Println(err)
 	}
@@ -120,6 +123,47 @@ func Sha1WithRSABase64(data string, privatekey string) (string, error) {
 	return out, nil
 }
 
+
+func Sha1WithRSAPKCS8Base64Sign(data string, privatekey string) (string, error) {
+	key, err := base64.StdEncoding.DecodeString(privatekey)
+	if err != nil {
+		log.Println(err)
+		panic("")
+	}
+	privateKey, err := x509.ParsePKCS8PrivateKey(key)
+	if err != nil {
+		log.Println(err)
+		panic("")
+	}
+	h := sha1.New()
+	h.Write([]byte([]byte(data)))
+	hash := h.Sum(nil)
+	signature, err := rsa.SignPKCS1v15(rand.Reader, privateKey.(*rsa.PrivateKey), crypto.SHA1, hash[:])
+	if err != nil {
+		fmt.Printf("Error from signing: %s\n", err)
+		return "", err
+	}
+	out := base64.StdEncoding.EncodeToString(signature)
+	return out, nil
+}
+
+func Sha1WithRSAPKCS8Base64VerifySign(originData, signData, publickey string) error {
+	key, _ := base64.StdEncoding.DecodeString(publickey)
+	pub, _ := x509.ParsePKIXPublicKey(key)
+	h := sha1.New()
+	h.Write([]byte([]byte(originData)))
+	hash := h.Sum(nil)
+	sig, err := base64.StdEncoding.DecodeString(signData)
+	if err != nil {
+		return err
+	}
+	err = rsa.VerifyPKCS1v15(pub.(*rsa.PublicKey), crypto.SHA1, hash, sig)
+	if err != nil {
+		fmt.Printf("Error from signing: %s\n", err)
+		return err
+	}
+	return nil
+}
 
 func alih5old() {
 	md5key := "p8h3q7ymgzmzh6zxsiqplr772tk5ssd1"

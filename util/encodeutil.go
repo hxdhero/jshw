@@ -12,6 +12,10 @@ import (
 	"bytes"
 	"crypto/des"
 	"crypto/cipher"
+	"crypto/x509"
+	"crypto/rsa"
+	"crypto"
+	"fmt"
 )
 
 const (
@@ -217,4 +221,39 @@ func SliceRemove(ss []interface{}, s interface{}) []interface{} {
 		}
 	}
 	return ss
+}
+
+//rsa私钥加密
+func Sha1WithRSAPKCS8Base64Sign(data string, privatekey string) (string, error) {
+	key, _ := base64.StdEncoding.DecodeString(privatekey)
+	privateKey, _ := x509.ParsePKCS8PrivateKey(key)
+	h := sha1.New()
+	h.Write([]byte([]byte(data)))
+	hash := h.Sum(nil)
+	signature, err := rsa.SignPKCS1v15(rand.Reader, privateKey.(*rsa.PrivateKey), crypto.SHA1, hash[:])
+	if err != nil {
+		fmt.Printf("Error from signing: %s\n", err)
+		return "", err
+	}
+	out := base64.StdEncoding.EncodeToString(signature)
+	return out, nil
+}
+
+//rsa公钥解密
+func Sha1WithRSAPKCS8Base64VerifySign(originData, signData, publickey string) error {
+	key, _ := base64.StdEncoding.DecodeString(publickey)
+	pub, _ := x509.ParsePKIXPublicKey(key)
+	h := sha1.New()
+	h.Write([]byte([]byte(originData)))
+	hash := h.Sum(nil)
+	sig, err := base64.StdEncoding.DecodeString(signData)
+	if err != nil {
+		return err
+	}
+	err = rsa.VerifyPKCS1v15(pub.(*rsa.PublicKey), crypto.SHA1, hash, sig)
+	if err != nil {
+		fmt.Printf("Error from signing: %s\n", err)
+		return err
+	}
+	return nil
 }
