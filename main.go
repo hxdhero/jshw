@@ -48,6 +48,8 @@ func main() {
 	server.POST("/commitOrder",controller.CommitOrder)//提交订单
 	//----基础相关api
 	server.POST("/sendCodeSMS",controller.SendCodeSMS)//发送短信验证码
+	//----支付宝回调
+	server.POST("/jshw_notify_ali",controller.AliNotify)//支付宝h5回调
 	//*****测试api
 	server.POST("/test",controller.TestData)//测试数据
 	server.POST("/upload",controller.TestFileUpload)//测试文件上传
