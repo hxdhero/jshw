@@ -76,10 +76,10 @@ func alih5new() {
 	privateKey := "MIICXAIBAAKBgQDMtmFV5RjuwzmvpdenizGSnR60XF954ynY4t6r9IA7WgeGEFAUfhW5gagbFMpc6FHiUdl29oPjLud+YtWFCkHjobl6bAw0diBAjZeqRBow22RuFzuhrVm3dmVW2vGpAeM25lxSxTSsilwfH+h3I4mV0ySA3t0euIP3ce6rykKIbwIDAQABAoGAUWLEycheJDZ7TaiqVxLQr5BFr8D1uFimv3JawpRfErmVOihsHemOq4Svl6ypU0yNmWOfCFuzTXPNVwLmDpFoZefrcSIw61/6l6R2lCHvk8BNJ40gU573I/UlxNCOL9DiW2ooQIGS+uKV551tFsfG1O8MSZ88KDRoMcqcugPH/4ECQQD0z04J8VUjlYzhSuslS4XajW7dEJjJYWq15osNqaA5PgICkeaR5Pz9Wk8ztElhu0+/dC35cl8hEVQxO5LZikwvAkEA1hHeChGzIQCrQI14YehYQVWgttfqIl0FOvEVzaogjPbfRDhcrZVNxeNhjRFTfN/xTgeWDqf+1PrsZ43Iyi83wQJBANxKUyH1TTSZFU2B2fkUbZ2N2W4JykKka57Flukzc18vIiXn3j/4e4MLqeuP1tyf7hIM3HXz6hBahJVM00b4ALcCQGO1wtSx1dvjceEJhC8miCU2eztvarFC3rLLpLo9Khg+zVP7ZL+9sZIhDUkl7ttVfBI6WlzNR1dw4TiCxCnYwIECQGTZAaBbqPeBiPMe5wfnOACBgposX+lqKRlPIxAE2LaExJw/oZbaBp6TqWcT/7m2vyD3b5gOaAlW+NEjjtr1NeE="
 	//base
 
-	payUrl:="https://openapi.alipaydev.com/gateway.do"//沙箱地址
-	appid := "2016080300158632"//沙箱环境
-	//appid:="2017040106522852"//正式坏境
-	//payUrl:="https://openapi.alipay.com/gateway.do"//正式环境
+	//payUrl:="https://openapi.alipaydev.com/gateway.do"//沙箱地址
+	//appid := "2016080300158632"//沙箱环境
+	appid:="2017040106522852"//正式坏境
+	payUrl:="https://openapi.alipay.com/gateway.do"//正式环境
 	method := "alipay.trade.wap.pay"
 	charset := "utf-8"
 	sign_type := "RSA"
