@@ -202,6 +202,8 @@ func AliNotify(c *gin.Context) {
 	seelog.Debug(tradeStatus)
 	if tradeStatus == "TRADE_SUCCESS" || tradeStatus == "TRADE_FINISHED" {
 		//订单完成
+		//告诉支付宝支付成功
+		c.Writer.Write([]byte("success"))
 	}
 }
 

@@ -47,7 +47,7 @@ func alih5new() {
 	notifyUrl:="http://www.easytool.site/jshw_notify_ali"
 	//biz
 	subject := "大乐透"
-	out_trade_no := "hxd201704110001"
+	out_trade_no := "hxd201704120002"
 	total_amount := "0.1"
 	product_code := "QUICK_WAP_PAY"
 
@@ -90,7 +90,7 @@ func alih5new() {
 	}
 	bufStr:=buf.String()
 	log.Println("待签名: ",bufStr)
-	sign, err := Sha1WithRSAPKCS8Base64Sign(bufStr, privateKey)
+	sign, err := Sha1WithRSABase64(bufStr, privateKey)
 	if err != nil {
 		log.Println(err)
 	}
