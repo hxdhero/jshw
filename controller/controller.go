@@ -15,9 +15,10 @@ import (
 	"local/jshw/model/sms"
 	"strconv"
 	"sort"
-	"net/http/httputil"
 	"strings"
 	"encoding/base64"
+	"net/url"
+	"local/jshw/model/order"
 )
 
 //返回错误信息
@@ -151,11 +152,12 @@ func SendCodeSMS(c *gin.Context) {
 //支付宝回调接口
 func AliNotify(c *gin.Context) {
 	defer func() {
+		seelog.Flush()
 		recover()
 	}()
 	seelog.Flush() //打印日志
-	dump, _ := httputil.DumpRequest(c.Request, true)
-	seelog.Debug("request: ", string(dump))
+	//dump, _ := httputil.DumpRequest(c.Request, true)
+	//seelog.Debug("request: ", string(dump))
 	c.Request.ParseForm()
 	urlValues := c.Request.Form
 	//支付宝给回的签名
@@ -183,16 +185,18 @@ func AliNotify(c *gin.Context) {
 	seelog.Debug("signStr: ", signStr)
 	seelog.Debug("base64SignStr: ", base64.StdEncoding.EncodeToString([]byte(signStr)))
 	seelog.Debug("sign: ", sign)
-	err := util.Sha1WithRSAPKCS8Base64VerifySign(signStr, sign, "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDI6d306Q8fIfCOaTXyiUeJHkrIvYISRcc73s3vF1ZT7XN8RNPwJxo8pWaJMmvyTn9N4HQ632qJBVHf8sxHi/fEsraprwCtzvzQETrNRwVxLO5jVmRGi60j8Ue1efIlzPXV9je9mkjzOmdssymZkh2QhUrCmZYI/FCEa3/cNMW0QIDAQAB")
+	err := util.Sha1WithRSAPKCS8Base64VerifySign(signStr, sign, conf.AppConfig.String("alipubKey"))
 	if err != nil {
 		seelog.Error(err)
 		panic(err)
 	}
 
-	tradeNo := urlValues["out_trade_no"][0] //订单号
-	amount := urlValues["total_amount"][0]  //金额
-	sellerID := urlValues["seller_id"][0]   //卖家
-	appID := urlValues["app_id"][0]         //应用id
+	tradeNo := urlValues["out_trade_no"][0]      //订单号
+	amount := urlValues["total_amount"][0]       //金额
+	sellerID := urlValues["seller_id"][0]        //卖家
+	appID := urlValues["app_id"][0]              //应用id
+	paramBack := urlValues["passback_params"][0] //返回的透传参数
+	seelog.Debug("paramBack", paramBack)
 	seelog.Debug("tradeNo: ", tradeNo)
 	seelog.Debug("amount: ", amount)
 	seelog.Debug("sellerID: ", sellerID)
@@ -202,7 +206,42 @@ func AliNotify(c *gin.Context) {
 	seelog.Debug(tradeStatus)
 	if tradeStatus == "TRADE_SUCCESS" || tradeStatus == "TRADE_FINISHED" {
 		//订单完成
+
+		ucStr, err := url.QueryUnescape(paramBack)
+		if err != nil {
+			seelog.Error(err)
+		}
+		urlBackParam, err := url.ParseQuery(ucStr)
+		if err != nil {
+			seelog.Error(err)
+		}
+		orderID := urlBackParam.Get("orderID")
+		orderIDInt, err := strconv.Atoi(orderID)
+		if err != nil {
+			seelog.Error(orderIDInt)
+		}
+		order := &model.Order{ID: int64(orderIDInt)}
+		err = logic.GetOrderByID(order)
+		seelog.Debug("获取订单: ", order)
+		if err != nil {
+			seelog.Error("获取订单失败: ", err)
+		}
+		amount64, err := strconv.ParseFloat(amount, 64)
+		if err != nil {
+			seelog.Error(err)
+		}
+		order.PaymentFee = amount64
+		order.PaymentTime = time.Now()
+		order.PaymentStatus = 2
+		order.Status = 2
+		err = logic.UpdateOrder(order)
+		if err != nil {
+			seelog.Error(err)
+		}
+
 	}
+	c.Writer.WriteString("success")
+	seelog.Debug("ali_notify_suc")
 }
 
 //测试方法---------------------

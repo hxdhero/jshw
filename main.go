@@ -46,6 +46,8 @@ func main() {
 	server.POST("/user_contacts",controller.UserContacts)//获取用户联系人
 	//----订单相关
 	server.POST("/commitOrder",controller.CommitOrder)//提交订单
+	server.POST("/orderDetail",controller.OrderDetailByID)//获取订单详情
+	server.POST("/orderPay",controller.OrderPay)//订单支付
 	//----基础相关api
 	server.POST("/sendCodeSMS",controller.SendCodeSMS)//发送短信验证码
 	//----支付宝回调

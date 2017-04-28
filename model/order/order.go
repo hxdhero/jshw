@@ -7,7 +7,7 @@ type Order struct {
 	ID              int64     `xorm:" 'id' pk autoincr <- "`
 	OrderNO         string    `xorm:"order_no"`
 	TradeNO         string    `xorm:"trade_no"` //交易号担保支付时使用
-	UserID          int     `xorm:"user_id"`  //
+	UserID          int     `xorm:"user_id"`    //
 	UserName        string    `xorm:"user_name"`
 	PaymentID       int64     `xorm:"payment_id"`      //支付方式
 	PaymentFee      float64   `xorm:"payment_fee"`     //支付手续费
@@ -17,16 +17,19 @@ type Order struct {
 	Message         string    `xorm:"message"`         //描述
 	RealAmount      float64   `xorm:"real_amount"`     //实际支付
 	OrderAmount     float64   `xorm:"order_amount"`    //订单价格
-	Status          int       `xorm:"status"`          //1.订单生成2.订单确认
+	Status          int       `xorm:"status"`          //2.已支付4.已取消5.已作废6.申请退款中7.已经退款other.待付款
 	AddTime         time.Time `xorm:"add_time"`        //下单时间
 	PlayNum         int       `xorm:"playnum"`         //出行人数
-	ApplyRefundDate time.Time `xorm:"applyrefunddate"` //申请退款日期
-	RefundReason    string    `xorm:"refundreason"`    //退款理由
 	BuyerEmail      string    `xorm:"buyer_email"`     //下单人邮箱
 	OutDate         time.Time `xorm:"outdate"`         //出行日期
 	BackDate        time.Time `xorm:"backdate"`        //返回日期
 	RendezvousID    int       `xorm:"rendezvousid"`    //集合地点id dt_dz_point
 	RendezvousName  string    `xorm:"rendezvousname"`  //集合地点名
+	Refundfee       float64 `xorm:"refundfee"`         //退款金额
+	RefundDate      time.Time `xorm:"refunddate"`      //退款时间
+	ApplyRefundDate time.Time `xorm:"applyrefunddate"` //申请退款日期
+	RefundReason    string    `xorm:"refundreason"`    //退款理由
+
 }
 
 func (o *Order) TableName() string {

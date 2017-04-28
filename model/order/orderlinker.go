@@ -9,7 +9,7 @@ type OrderLinker struct {
 	Mobile string `xorm:"mobile"`
 	IDCard string `xorm:"idcard"`
 	Gender string `xorm:"sex"`
-	BirthDay time.Time `xorm:"birghday"`
+	BirthDay time.Time `xorm:"birthday"`
 	Remark string `xorm:"remark"`
 }
 

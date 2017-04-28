@@ -257,3 +257,19 @@ func Sha1WithRSAPKCS8Base64VerifySign(originData, signData, publickey string) er
 	}
 	return nil
 }
+
+//签名加密
+func Sha1WithRSABase64(data string, privatekey string) (string, error) {
+	key, _ := base64.StdEncoding.DecodeString(privatekey)
+	privateKey, _ := x509.ParsePKCS1PrivateKey(key)
+	h := sha1.New()
+	h.Write([]byte([]byte(data)))
+	hash := h.Sum(nil)
+	signature, err := rsa.SignPKCS1v15(rand.Reader, privateKey, crypto.SHA1, hash[:])
+	if err != nil {
+		fmt.Printf("Error from signing: %s\n", err)
+		return "", err
+	}
+	out := base64.StdEncoding.EncodeToString(signature)
+	return out, nil
+}

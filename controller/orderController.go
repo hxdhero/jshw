@@ -17,6 +17,9 @@ import (
 	model3 "local/jshw/model"
 	"local/jshw/util"
 	"log"
+	"net/url"
+	"sort"
+	"bytes"
 )
 
 //用户提交订单
@@ -110,8 +113,8 @@ func CommitOrder(c *gin.Context) {
 	//生成订单号
 	dStr := time.Now().Format("20060102")
 	sino := fmt.Sprintf("%05d", ino)
-	seelog.Debug("sino: ",sino)
-	orderNOStr:=dStr+sino
+	seelog.Debug("sino: ", sino)
+	orderNOStr := dStr + sino
 	seelog.Debug(orderNOStr)
 	//获取线路
 	line := model2.TourismLine{ID: int(lineID)}
@@ -155,20 +158,21 @@ func CommitOrder(c *gin.Context) {
 		RendezvousID:   pointID,
 		RendezvousName: pointName,
 	}
-	contacts,err:=TranContacts(selectContacts)
-	outers,err:=TranContacts(selectPersons)
-	log.Println("selectContacts: ",contacts)
-	log.Println("selectPersons: ",outers)
+	contacts, err := TranContacts(selectContacts)
+	outers, err := TranContacts(selectPersons)
+	log.Println("selectContacts: ", contacts)
+	log.Println("selectPersons: ", outers)
+
 	//return
-	val, err := logic.AddOrder(&order,int(lineID),&contacts,&outers)
+	val, err := logic.AddOrder(&order, int(lineID), &contacts, &outers)
 	if err != nil {
 		seelog.Error(err)
 		ReturnErrorStr(c, "内部错误")
 		return
 	}
-	if val != 1{
+	if val != 1 {
 		seelog.Error("添加order失败")
-		ReturnErrorStr(c,"内部错误")
+		ReturnErrorStr(c, "内部错误")
 		return
 	}
 
@@ -179,16 +183,16 @@ func CommitOrder(c *gin.Context) {
 }
 
 //把用户联系人和出行人封装为对象
-func TranContacts(in []interface{})([]model3.UserContact, error){
-	out:=[]model3.UserContact{}
-	for _,ele:=range in{
-		euc:=ele.(map[string]interface{})
-		sexStr, birthday,err:=util.GetIDCardInfo(euc["idcard"].(string))
+func TranContacts(in []interface{}) ([]model3.UserContact, error) {
+	out := []model3.UserContact{}
+	for _, ele := range in {
+		euc := ele.(map[string]interface{})
+		sexStr, birthday, err := util.GetIDCardInfo(euc["idcard"].(string))
 		if err != nil {
-			seelog.Error("身份证信息提取错误",err)
-			return nil,err
+			seelog.Error("身份证信息提取错误", err)
+			return nil, err
 		}
-		uc:=model3.UserContact{
+		uc := model3.UserContact{
 			IDCard:        euc["idcard"].(string),
 			ContactName:   euc["name"].(string),
 			ContactMobile: euc["mobile"].(string),
@@ -196,7 +200,161 @@ func TranContacts(in []interface{})([]model3.UserContact, error){
 			Birthday:      birthday,
 		}
 
-		out=append(out,uc)
+		out = append(out, uc)
 	}
-	return out,nil
+	return out, nil
+}
+
+//根据id获取订单详情
+func OrderDetailByID(c *gin.Context) {
+	orderID := c.PostForm("OrderID")
+	orderIDInt, err := strconv.Atoi(orderID)
+	if err != nil {
+		seelog.Error(err)
+		ReturnErrorStr(c, "订单id错误")
+		return
+	}
+	//订单
+	order := &model.Order{ID: int64(orderIDInt)}
+	err = logic.GetOrderByID(order)
+	if err != nil {
+		seelog.Error(err)
+		ReturnErrorStr(c, "获取订单详情失败")
+		return
+	}
+	//订单商品
+	og, err := logic.GetOrderGoodsByOrderID(order.ID)
+	if err != nil {
+		seelog.Error(err)
+		ReturnErrorStr(c, err.Error())
+		return
+	}
+
+	ols, err := logic.GetOrderLinkersByOrderID(order.ID)
+	if err != nil {
+		seelog.Error(err)
+		ReturnErrorStr(c, err.Error())
+		return
+	}
+	data := map[string]interface{}{}
+	odm := map[string]interface{}{}
+	odm["order"] = order
+	odm["ordergoods"] = og
+	odm["orderlinkers"] = ols
+	data["suc"] = true
+	data["data"] = odm
+	c.JSON(http.StatusOK, data)
+}
+
+//订单支付
+func OrderPay(c *gin.Context) {
+	data := map[string]interface{}{}
+	orderID := c.PostForm("OrderID")
+	rUrl := c.PostForm("returnUrl")
+	orderIDInt, err := strconv.Atoi(orderID)
+	if err != nil {
+		seelog.Error(err)
+		ReturnErrorStr(c, "订单id错误")
+		return
+	}
+	//订单
+	order := &model.Order{ID: int64(orderIDInt)}
+	err = logic.GetOrderByID(order)
+	if err != nil {
+		seelog.Error(err)
+		ReturnErrorStr(c, "获取订单详情失败")
+		return
+	}
+	order.TradeNO = time.Now().Format("20060102") + strconv.Itoa(int(time.Now().UnixNano()))
+	url, err := alih5new(order,rUrl)
+	if err != nil {
+		seelog.Error(err)
+		ReturnErrorStr(c, err.Error())
+		return
+	}
+	data["suc"] = true
+	data["data"] = url
+	c.JSON(http.StatusOK, data)
+}
+
+func alih5new(order *model.Order, returnUrl string) (string, error) {
+	privateKey := conf.AppConfig.String("appKey")
+	//base
+	appid := conf.AppConfig.String("appid")   //正式坏境
+	payUrl := conf.AppConfig.String("payUrl") //正式环境
+	method := conf.AppConfig.String("payMethod")
+	charset := "utf-8"
+	sign_type := "RSA"
+	timestamp := time.Now().Format("2006-01-02 15:04:05")
+	version := "1.0"
+	notifyUrl := conf.AppConfig.String("alipay_notify_url")
+	//biz
+	subject := "订单支付"
+	out_trade_no := order.TradeNO
+	total_amount := strconv.FormatFloat(order.OrderAmount, 'f', 2, 64)
+	product_code := "QUICK_WAP_PAY"
+
+	bizMap := map[string]string{}
+	bizMap["subject"] = subject
+	bizMap["out_trade_no"] = out_trade_no
+	bizMap["total_amount"] = total_amount
+	bp:=url.Values{}
+	bp.Set("orderID",strconv.Itoa(int(order.ID)))
+	bpStr:=bp.Encode()
+	bizMap["passback_params"] =url.QueryEscape(bpStr)
+	bizMap["product_code"] = product_code
+	bizByte, err := json.Marshal(bizMap)
+	if err != nil {
+		log.Println(err)
+		return "", err
+	}
+	biz_content := string(bizByte)
+
+	uv := url.Values{}
+	uv.Set("app_id", appid)
+	uv.Set("method", method)
+	uv.Set("charset", charset)
+	uv.Set("sign_type", sign_type)
+	uv.Set("timestamp", timestamp)
+	uv.Set("version", version)
+	uv.Set("return_url",returnUrl)
+	uv.Set("notify_url", notifyUrl)
+	uv.Set("biz_content", biz_content)
+	paramKeys := []string{}
+	for k := range uv {
+		paramKeys = append(paramKeys, k)
+	}
+	sort.Strings(paramKeys)
+	var buf bytes.Buffer
+	for _, k := range paramKeys {
+		vs := uv[k]
+		prefix := k + "="
+		for _, v := range vs {
+			if buf.Len() > 0 {
+				buf.WriteByte('&')
+			}
+			buf.WriteString(prefix)
+			buf.WriteString(v)
+		}
+	}
+	bufStr := buf.String()
+	log.Println("待签名: ", bufStr)
+	sign, err := util.Sha1WithRSABase64(bufStr, privateKey)
+	if err != nil {
+		seelog.Error(err)
+		return "", err
+	}
+	log.Println("sign:  ", sign)
+	uv.Set("sign", sign)
+	body := uv.Encode()
+	log.Println("body:  ", body)
+	uri, err := url.Parse(payUrl)
+	if err != nil {
+		seelog.Error(err)
+		return "", err
+	}
+	uri.RawQuery = body
+	seelog.Debug("======  ", uri.String())
+	return uri.String(), err
+
 }

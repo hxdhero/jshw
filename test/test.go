@@ -16,11 +16,22 @@ import (
 	"encoding/base64"
 	"sort"
 	"bytes"
+	"local/jshw/util"
 )
 
 func main() {
 	log.SetFlags(log.Llongfile|log.Ldate)
 	alih5new()
+	//GetPWD()
+}
+
+func GetPWD(){
+	pwd,err:=util.DESDecode("9D78062A85DDE15C19BF526159C4F15B","288XNJ")
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	log.Println(pwd)
 }
 
 
@@ -47,7 +58,7 @@ func alih5new() {
 	notifyUrl:="http://www.easytool.site/jshw_notify_ali"
 	//biz
 	subject := "大乐透"
-	out_trade_no := "hxd201704110001"
+	out_trade_no := "hxd201704110002"
 	total_amount := "0.1"
 	product_code := "QUICK_WAP_PAY"
 
@@ -90,7 +101,7 @@ func alih5new() {
 	}
 	bufStr:=buf.String()
 	log.Println("待签名: ",bufStr)
-	sign, err := Sha1WithRSAPKCS8Base64Sign(bufStr, privateKey)
+	sign, err := Sha1WithRSABase64(bufStr, privateKey)
 	if err != nil {
 		log.Println(err)
 	}

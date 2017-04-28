@@ -62,7 +62,7 @@ func InitApp() {
 	}
 	//开发模式打印orm语句
 	if mode == Dev {
-		DBEngine.ShowSQL(true)
+		DBEngine.ShowSQL(false)
 		DBEngine.Logger().SetLevel(core.LOG_DEBUG)
 	}
 	if err != nil {
