@@ -8,6 +8,7 @@ import (
 	"github.com/tommy351/gin-sessions"
 	"net/http"
 	"local/jshw/conf"
+	"github.com/astaxie/beego/logs"
 )
 
 /**
@@ -31,6 +32,7 @@ func main() {
 	server.Use(sessions.Middleware("ginsession", store))
 	//设置静态路径
 	server.Static("/static","./static")
+	server.Static("/.well-known/pki-validation/","./static")
 	//设置模板路径
 	server.LoadHTMLGlob("view/*")
 	server.StaticFile("/favicon.ico","./assets/favicon.ico")
@@ -63,6 +65,10 @@ func main() {
 	})
 	log.Println("server start on:",conf.AppConfig.String("httpport"))
 	//启动服务
-	server.Run(":" + conf.AppConfig.String("httpport"))
+	err:=server.RunTLS(":" + conf.AppConfig.String("httpport"),"ali.pem","ali.key")
+	if err != nil {
+		logs.Error(err)
+		panic(err)
+	}
 
 }
