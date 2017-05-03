@@ -19,6 +19,7 @@ type TourismLine struct {
 	MaxPrice     float64   `xorm:"maxPrice"`    //最高价格
 	CreateDate   time.Time `xorm:"createDate"`
 	UpdateDate   time.Time `xorm:"updateDate"`
+	MinPerson    int       `xorm:"minPerson"` //最少人数
 	PlaceName    string    `xorm:"placeNames"` //线路位置
 }
 

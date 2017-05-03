@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"strings"
 	"github.com/cihub/seelog"
+	model2 "local/jshw/model"
 )
 
 //获取简单的线路列表
@@ -42,17 +43,18 @@ func TourismLineDetail(c *gin.Context) {
 	tourismLineDetail := model.TourismLineDetail{}
 
 	tl := []model.TourismLine{}
-	tld := model.TourismLineDate{TourismLineID:lineIDInt}
 	tlt := []model.TourismLineTrip{}
 	tli := []model.TourismLineImages{}
 	tlp := []model.TourismLinePoint{}
+	var linePersons []model2.LineUser
+	//参加该线路该日期段的用户
 	err = logic.GetTourismLineByID(&tl, lineIDInt)
 	if err != nil {
 		seelog.Error(err)
 		ReturnError(c, err)
 		return
 	}
-	_, err = logic.GetTourismLineDateByLineID(&tld)
+	lineDates, err := logic.GetTourismLineDateByLineID(lineIDInt)
 	if err != nil {
 		seelog.Error(err)
 		ReturnError(c, err)
@@ -76,18 +78,30 @@ func TourismLineDetail(c *gin.Context) {
 		ReturnError(c, err)
 		return
 	}
+	if len(lineDates) > 0{
+		linePersons, err = logic.GetPersonsByline(lineIDInt, lineDates[0].ID)
+		if err != nil {
+			seelog.Error(err)
+			ReturnError(c, err)
+			return
+		}
+	}else{
+		linePersons = []model2.LineUser{}
+	}
+
+
 
 	//格式化路线中的img
 	formatTlt := []model.TourismLineTrip{}
 	for _, trip := range tlt {
-		//replacer:=strings.NewReplacer("src=\"/","<img src=\"http://www.jshwclub.com/")
-		replacer := strings.NewReplacer(
-			"<img", "",
-			"src=\"/upload/", "",
-			"width=", "",
-			"height=", "",
-			"alt=", "",
-		)
+		replacer := strings.NewReplacer("src=\"/", " src=\"http://www.jshwclub.com/")
+		//replacer := strings.NewReplacer(
+		//	"<img", "",
+		//	"src=\"/upload/", "",
+		//	"width=", "",
+		//	"height=", "",
+		//	"alt=", "",
+		//)
 		tlt := model.TourismLineTrip{}
 		tlt.ID = trip.ID
 		tlt.Title = trip.Title
@@ -95,18 +109,18 @@ func TourismLineDetail(c *gin.Context) {
 		formatTlt = append(formatTlt, tlt)
 	}
 	//更改集合点中百度地图iframe的宽度
-	replacer := strings.NewReplacer(
-		"558", "300", //iframe宽度
-		"560", "300", //地图层的宽度
-	)
-	tl[0].PlaceExplain = replacer.Replace(tl[0].PlaceExplain)
+	//replacer := strings.NewReplacer(
+	//	"558", "300", //iframe宽度
+	//	"560", "300", //地图层的宽度
+	//)
+	//tl[0].PlaceExplain = replacer.Replace(tl[0].PlaceExplain)
 
 	tourismLineDetail.Line = tl[0]
-	tourismLineDetail.LineDate = tld
+	tourismLineDetail.LineDate = lineDates
 	tourismLineDetail.LineTrip = formatTlt
 	tourismLineDetail.LineImage = tli
 	tourismLineDetail.LinePoint = tlp
-
+	tourismLineDetail.LineUsers = linePersons
 	respData["suc"] = true
 	respData["data"] = tourismLineDetail
 	c.JSON(http.StatusOK, respData)

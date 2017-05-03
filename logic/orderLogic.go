@@ -26,7 +26,7 @@ func OrderGOSummary(ogos *[]model.OrderOG, userID string) error {
 //2.保存订单商品
 //3.保存订单联系人
 //4.保存用户联系人
-func AddOrder(order *model.Order,lineID int,contacts,outers *[]model3.UserContact) (int64,error) {
+func AddOrder(order *model.Order,lineID,lineDateID int,contacts,outers *[]model3.UserContact) (int64,error) {
 	//开启事务
 	session:=conf.DBEngine.NewSession()
 	defer session.Close()
@@ -58,16 +58,16 @@ func AddOrder(order *model.Order,lineID int,contacts,outers *[]model3.UserContac
 		return 0,errors.New("内部错误")
 	}
 	//线路日期
-	lineDate:=model2.TourismLineDate{TourismLineID:int(lineID)}
-	has,err=GetTourismLineDateByLineID(&lineDate)
-	if !has{
-		seelog.Error("找不到线路日期: ",lineID)
-		return 0,errors.New("内部错误")
-	}
-	if err != nil {
-		seelog.Error(err)
-		return 0,errors.New("内部错误")
-	}
+	//lineDate:=model2.TourismLineDate{TourismLineID:int(lineID)}
+	//has,err=GetTourismLineDateByLineID(&lineDate)
+	//if !has{
+	//	seelog.Error("找不到线路日期: ",lineID)
+	//	return 0,errors.New("内部错误")
+	//}
+	//if err != nil {
+	//	seelog.Error(err)
+	//	return 0,errors.New("内部错误")
+	//}
 	//2.保存订单商品
 	orderGoods:=model.OrderGoods{
 		OrderID:order.ID,
@@ -76,7 +76,7 @@ func AddOrder(order *model.Order,lineID int,contacts,outers *[]model3.UserContac
 		RealPrice:line.MaxPrice,
 		Quantity:1,
 		TourismLineID:int64(lineID),
-		TourismLineDateID:int64(lineDate.ID),
+		TourismLineDateID:int64(lineDateID),
 	}
 	val,err=session.Insert(&orderGoods)
 	if val!=1{
