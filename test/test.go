@@ -58,7 +58,11 @@ func alih5new() {
 	notifyUrl:="http://www.easytool.site/jshw_notify_ali"
 	//biz
 	subject := "大乐透"
+<<<<<<< HEAD
 	out_trade_no := "hxd201704110002"
+=======
+	out_trade_no := "hxd201704120002"
+>>>>>>> 97c194d2e8f247ef2211abc97549f239c59712f9
 	total_amount := "0.1"
 	product_code := "QUICK_WAP_PAY"
 

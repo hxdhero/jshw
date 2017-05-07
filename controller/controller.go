@@ -206,6 +206,7 @@ func AliNotify(c *gin.Context) {
 	seelog.Debug(tradeStatus)
 	if tradeStatus == "TRADE_SUCCESS" || tradeStatus == "TRADE_FINISHED" {
 		//订单完成
+<<<<<<< HEAD
 
 		ucStr, err := url.QueryUnescape(paramBack)
 		if err != nil {
@@ -239,6 +240,10 @@ func AliNotify(c *gin.Context) {
 			seelog.Error(err)
 		}
 
+=======
+		//告诉支付宝支付成功
+		c.Writer.Write([]byte("success"))
+>>>>>>> 97c194d2e8f247ef2211abc97549f239c59712f9
 	}
 	c.Writer.WriteString("success")
 	seelog.Debug("ali_notify_suc")

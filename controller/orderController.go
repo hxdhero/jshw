@@ -40,6 +40,7 @@ func CommitOrder(c *gin.Context) {
 	seelog.Debug(orderData)
 
 	lineID := orderData["lineID"].(float64)
+	lineDateID:=orderData["lineDateID"].(int)
 	//lineIDInt, err := strconv.Atoi(lineID)
 	//if err != nil {
 	//	seelog.Error(err)
@@ -130,8 +131,8 @@ func CommitOrder(c *gin.Context) {
 		return
 	}
 	//获取线路日期
-	lineDate := model2.TourismLineDate{TourismLineID: int(lineID)}
-	has, err = logic.GetTourismLineDateByLineID(&lineDate)
+	lineDate:= &model2.TourismLineDate{ID:lineDateID}
+	has, err = logic.GetLineDateByID(lineDate)
 	if err != nil {
 		seelog.Error(err)
 		ReturnErrorStr(c, "内部错误")
@@ -164,7 +165,11 @@ func CommitOrder(c *gin.Context) {
 	log.Println("selectPersons: ", outers)
 
 	//return
+<<<<<<< HEAD
 	val, err := logic.AddOrder(&order, int(lineID), &contacts, &outers)
+=======
+	val, err := logic.AddOrder(&order,int(lineID),lineDateID,&contacts,&outers)
+>>>>>>> 97c194d2e8f247ef2211abc97549f239c59712f9
 	if err != nil {
 		seelog.Error(err)
 		ReturnErrorStr(c, "内部错误")

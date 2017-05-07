@@ -5,6 +5,8 @@ import (
 	"local/jshw/model/tourismline"
 	"github.com/cihub/seelog"
 	"strings"
+	model2 "local/jshw/model"
+	"time"
 )
 
 //获取开放的路线,根据orders排序
@@ -12,7 +14,7 @@ func GetTourismList(tls *[]model.TourismLine) error {
 	err := conf.DBEngine.
 		Where(" is_top = ? ", 1).
 		Asc(" orders ").
-		Cols("id","code","title","images","minPrice","maxPrice").
+		Cols("id", "code", "title", "images", "minPrice", "maxPrice").
 		Find(tls)
 	return err
 }
@@ -30,8 +32,8 @@ func GetTourismDetail(tld *[]model.TourismLineDetailAll, tourismLineID int) erro
 }
 
 //根据id获取线路
-func GetLineByID(tl *model.TourismLine) (bool,error){
-	return conf.DBEngine.Where(" id = ? ",tl.ID).Get(tl)
+func GetLineByID(tl *model.TourismLine) (bool, error) {
+	return conf.DBEngine.Where(" id = ? ", tl.ID).Get(tl)
 }
 
 //根据id查询线路
@@ -41,9 +43,17 @@ func GetTourismLineByID(tl *[]model.TourismLine, tourismLineID int) error {
 }
 
 //根据线路查找日期
-func GetTourismLineDateByLineID(tld *model.TourismLineDate) (bool,error) {
-	return conf.DBEngine.Where(" dt_dz_tourismline_id = ? ", tld.TourismLineID).Desc("startDate").Limit(1).Get(tld)
+func GetTourismLineDateByLineID(lineId int) ([]model.TourismLineDate, error) {
+	datas := []model.TourismLineDate{}
+	err := conf.DBEngine.Where(" dt_dz_tourismline_id = ? and startDate > ? ", lineId,time.Now()).Asc("startDate").Find(&datas)
+	return datas, err
 }
+
+//根据id获取线路日期
+func GetLineDateByID(lineDate *model.TourismLineDate) (bool,error){
+	return conf.DBEngine.Where(" id = ? ",lineDate.ID).Get(lineDate)
+}
+
 
 //根据线路查找路线
 func GetTourismLineTripByLineID(tlt *[]model.TourismLineTrip, tourismLineID int) error {
@@ -75,4 +85,11 @@ func GetTourismLinePointByLineID(tlp *[]model.TourismLinePoint, lineID string) e
 		seelog.Error(err)
 	}
 	return err
+}
+
+//根据线路id和线路日期id获取参加线路的用户
+func GetPersonsByline(lineId, lineDateId int) ([]model2.LineUser, error) {
+	lineUsers := []model2.LineUser{}
+	err := conf.DBEngine.Where(" dt_orders_id in ( SELECT order_id FROM dt_order_goods WHERE dt_dz_tourismline_id = ? AND dt_dz_tourismlinedate_id = ? )", lineId, lineDateId).Find(&lineUsers)
+	return lineUsers, err
 }
